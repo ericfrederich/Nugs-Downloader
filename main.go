@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -47,7 +48,10 @@ const (
 
 var (
 	jar, _ = cookiejar.New(nil)
-	client = &http.Client{Jar: jar}
+	tr     = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client = &http.Client{Jar: jar, Transport: tr}
 )
 
 var regexStrings = [8]string{
